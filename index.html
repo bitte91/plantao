@@ -1128,21 +1128,115 @@
             };
 
             const renderFinances = (element) => {
+                const totalPaid = db.shifts.filter(s => s.isPaid).reduce((sum, s) => sum + s.value, 0);
+                const totalPending = db.shifts.filter(s => !s.isPaid).reduce((sum, s) => sum + s.value, 0);
+
                 element.innerHTML = `
-                    <h2 class="text-2xl font-bold text-text-primary dark:text-text-primary-dark mb-4">Análise Financeira</h2>
-                    <div class="bg-card dark:bg-card-dark p-6 rounded-lg shadow-custom mb-6">
-                         <h3 class="text-lg font-semibold mb-4">Faturamento Mensal</h3>
-                         <canvas id="financial-chart"></canvas>
+                    <div class="tab-content space-y-6">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                            <h2 class="text-2xl font-bold text-text-primary dark:text-text-primary-dark">Dashboard Financeiro</h2>
+                             <button onclick="window.openShiftModal(new Date().toISOString().split('T')[0])" class="bg-primary hover:bg-primary-600 dark:bg-primary-dark text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+                                <i data-lucide="plus"></i> Adicionar Plantão
+                            </button>
+                        </div>
+
+                        <!-- Cards de métricas -->
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Card Total Recebido -->
+                            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 card-hover">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="p-3 bg-green-100 dark:bg-green-900/30 rounded-xl">
+                                        <i data-lucide="check-circle" class="w-6 h-6 text-green-600 dark:text-green-400"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Total Recebido</h3>
+                                    <p class="text-3xl font-bold text-gray-900 dark:text-white">${totalPaid.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                                </div>
+                            </div>
+
+                            <!-- Card Pendente -->
+                            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 card-hover">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl">
+                                        <i data-lucide="clock" class="w-6 h-6 text-yellow-600 dark:text-yellow-400"></i>
+                                    </div>
+                                    <span class="text-sm text-yellow-600 dark:text-yellow-400 font-medium">${db.shifts.filter(s => !s.isPaid).length} pendentes</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Valores a Receber</h3>
+                                    <p class="text-3xl font-bold text-gray-900 dark:text-white">${totalPending.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tabela de Plantões -->
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                            <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Todos os Plantões</h3>
+                            </div>
+                            <div id="finances-table-container">
+                                ${renderFinancesTable()}
+                            </div>
+                        </div>
                     </div>
-                    ${renderFinancesTable()}
                 `;
-                renderFinancialChart();
+                lucide.createIcons();
             };
             
             const renderFinancesTable = () => {
                 const sortedShifts = [...db.shifts].sort((a,b) => new Date(b.date) - new Date(a.date));
-                if(sortedShifts.length === 0) return getEmptyState("Nenhum plantão para exibir histórico.", "history");
-                return `<div class="bg-card dark:bg-card-dark p-4 rounded-lg shadow-custom"><div class="overflow-x-auto"><table class="w-full text-left"><thead><tr class="border-b border-border dark:border-border-dark"><th class="p-2">Data</th><th class="p-2">Paciente</th><th class="p-2">Valor</th><th class="p-2">Status</th><th class="p-2">Ação</th></tr></thead><tbody>${sortedShifts.map(shift => `<tr><td class="p-2">${new Date(shift.date + 'T00:00:00').toLocaleDateString('pt-BR')}</td><td class="p-2">${db.patients.find(p => p.id === shift.patientId)?.name || 'N/A'}</td><td class="p-2">${shift.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td><td class="p-2"><span class="px-2 py-1 rounded-full text-xs font-semibold ${shift.isPaid ? 'bg-success/20 text-success' : 'bg-pending/20 text-pending'}">${shift.isPaid ? 'Pago' : 'Pendente'}</span></td><td class="p-2"><button onclick="window.togglePayment('${shift.id}')" class="text-sm ${shift.isPaid ? 'text-pending' : 'text-success'} hover:underline">${shift.isPaid ? 'Marcar Pendente' : 'Marcar Pago'}</button></td></tr>`).join('')}</tbody></table></div></div>`;
+
+                if(sortedShifts.length === 0) {
+                    return `
+                        <div class="p-8 text-center">
+                            <div class="w-16 h-16 mx-auto mb-4 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                                <i data-lucide="dollar-sign" class="w-8 h-8 text-gray-400"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Nenhum plantão registrado</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Adicione seu primeiro plantão para começar a acompanhar suas finanças.</p>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="divide-y divide-gray-200 dark:divide-gray-700">
+                        ${sortedShifts.map(shift => {
+                            const patient = db.patients.find(p => p.id === shift.patientId);
+                            const shiftDate = new Date(shift.date + 'T00:00:00');
+                            return `
+                                <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                        <div class="flex-1 mb-4 md:mb-0">
+                                            <div class="flex items-center gap-3">
+                                                <p class="font-semibold text-gray-900 dark:text-white">${patient?.name || 'Paciente não encontrado'}</p>
+                                                <span class="text-xs text-gray-500 dark:text-gray-400">${shiftDate.toLocaleDateString('pt-BR', {day: '2-digit', month: 'short', year: 'numeric'})}</span>
+                                            </div>
+                                            <p class="text-sm text-green-600 dark:text-green-400 font-medium mt-1">
+                                                ${shift.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                            </p>
+                                        </div>
+                                        <div class="flex items-center gap-4">
+                                            <button onclick="window.openShiftModal('${shift.date}', '${shift.id}')" class="text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-primary-dark p-2 rounded-full transition-colors">
+                                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                                            </button>
+                                            <label for="payment-toggle-${shift.id}" class="flex items-center cursor-pointer">
+                                                <div class="relative">
+                                                    <input type="checkbox" id="payment-toggle-${shift.id}" class="sr-only" ${shift.isPaid ? 'checked' : ''} onchange="window.togglePayment('${shift.id}')">
+                                                    <div class="block w-14 h-8 rounded-full ${shift.isPaid ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'}"></div>
+                                                    <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform ${shift.isPaid ? 'translate-x-6' : ''}"></div>
+                                                </div>
+                                                <div class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                                    ${shift.isPaid ? 'Pago' : 'Pendente'}
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
             }
 
             const renderReports = (element) => {
