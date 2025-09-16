@@ -112,10 +112,11 @@
             transition: background-color 0.3s, color 0.3s;
         }
         .tab-active { 
-            border-bottom: 2px solid var(--c-primary); 
             color: var(--c-primary); 
             font-weight: 600;
-            background: linear-gradient(to bottom, transparent 0%, var(--c-primary)/5% 100%);
+            background-color: var(--c-primary-light);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
         
         .modal-backdrop { background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); }
@@ -197,7 +198,7 @@
 
     <div id="print-area"></div>
 
-    <header class="bg-gradient-to-r from-primary to-secondary dark:from-primary-dark dark:to-secondary-dark text-white shadow-lg no-print">
+    <header class="bg-gradient-to-br from-primary-600 to-primary-700 dark:from-primary-700 dark:to-primary-800 text-white shadow-lg no-print">
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
@@ -676,50 +677,44 @@
                         <!-- Cards de métricas principais -->
                         <div class="grid md:grid-cols-3 gap-6">
                             <!-- Card Receita Total -->
-                            <div class="relative overflow-hidden bg-gradient-to-br from-green-500 to-green-600 text-white p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 group card-hover">
-                                <div class="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-12 translate-x-12"></div>
-                                <div class="relative z-10">
-                                    <div class="flex items-center justify-between mb-4">
-                                        <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                                            <i data-lucide="trending-up" class="w-6 h-6"></i>
-                                        </div>
-                                        <span class="text-sm bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm font-medium">+${revenueGrowth}%</span>
+                            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 card-hover">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="p-3 bg-green-100 dark:bg-green-900/30 rounded-xl">
+                                        <i data-lucide="trending-up" class="w-6 h-6 text-green-600 dark:text-green-400"></i>
                                     </div>
-                                    <h3 class="text-sm font-medium mb-1 opacity-90">Receita Total</h3>
-                                    <p class="text-3xl font-bold">${totalRevenue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                                    <p class="text-xs opacity-75 mt-2">Todos os tempos</p>
+                                    <span class="text-sm text-green-600 dark:text-green-400 font-medium">+${revenueGrowth}%</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Receita Total</h3>
+                                    <p class="text-3xl font-bold text-gray-900 dark:text-white">${totalRevenue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                                 </div>
                             </div>
                             
                             <!-- Card Total Pago -->
-                            <div class="relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-600 text-white p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 group card-hover">
-                                <div class="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-12 translate-x-12"></div>
-                                <div class="relative z-10">
-                                    <div class="flex items-center justify-between mb-4">
-                                        <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                                            <i data-lucide="check-circle" class="w-6 h-6"></i>
-                                        </div>
-                                        <span class="text-sm bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm font-medium">${((totalPaid/totalRevenue)*100).toFixed(0)}%</span>
+                            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 card-hover">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
+                                        <i data-lucide="check-circle" class="w-6 h-6 text-blue-600 dark:text-blue-400"></i>
                                     </div>
-                                    <h3 class="text-sm font-medium mb-1 opacity-90">Total Recebido</h3>
-                                    <p class="text-3xl font-bold">${totalPaid.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                                    <p class="text-xs opacity-75 mt-2">Valores confirmados</p>
+                                    <span class="text-sm text-blue-600 dark:text-blue-400 font-medium">${((totalPaid/totalRevenue)*100).toFixed(0)}%</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Total Recebido</h3>
+                                    <p class="text-3xl font-bold text-gray-900 dark:text-white">${totalPaid.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                                 </div>
                             </div>
                             
                             <!-- Card Pendente -->
-                            <div class="relative overflow-hidden bg-gradient-to-br from-orange-500 to-orange-600 text-white p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 group card-hover">
-                                <div class="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-12 translate-x-12"></div>
-                                <div class="relative z-10">
-                                    <div class="flex items-center justify-between mb-4">
-                                        <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                                            <i data-lucide="clock" class="w-6 h-6"></i>
-                                        </div>
-                                        <span class="text-sm bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm font-medium">${db.shifts.filter(s => !s.isPaid).length}</span>
+                            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 card-hover">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl">
+                                        <i data-lucide="clock" class="w-6 h-6 text-yellow-600 dark:text-yellow-400"></i>
                                     </div>
-                                    <h3 class="text-sm font-medium mb-1 opacity-90">Valores Pendentes</h3>
-                                    <p class="text-3xl font-bold">${totalPending.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                                    <p class="text-xs opacity-75 mt-2">Aguardando pagamento</p>
+                                    <span class="text-sm text-yellow-600 dark:text-yellow-400 font-medium">${db.shifts.filter(s => !s.isPaid).length}</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Valores Pendentes</h3>
+                                    <p class="text-3xl font-bold text-gray-900 dark:text-white">${totalPending.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                                 </div>
                             </div>
                         </div>
@@ -1389,6 +1384,115 @@
                 ];
                 
                 openModal(title, content, actions);
+            };
+
+            // MODAIS DE PLANTÃO
+            window.openShiftModal = (date, shiftId) => {
+                const isEdit = !!shiftId;
+                const shift = isEdit ? db.shifts.find(s => s.id == shiftId) : null;
+                const title = isEdit ? 'Editar Plantão' : 'Novo Plantão';
+
+                const content = `
+                    <form id="shift-form" class="space-y-4">
+                        <input type="hidden" id="shift-id" value="${shift?.id || ''}">
+                        <div>
+                            <label class="block text-sm font-medium text-text-primary dark:text-text-primary-dark mb-2">Paciente *</label>
+                            <select id="shift-patient" class="w-full p-3 border border-border dark:border-border-dark rounded-lg bg-card dark:bg-card-dark" required>
+                                ${db.patients.map(p => `<option value="${p.id}" ${shift?.patientId == p.id ? 'selected' : ''}>${p.name}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-text-primary dark:text-text-primary-dark mb-2">Data *</label>
+                                <input type="date" id="shift-date" value="${shift?.date || date}" class="w-full p-3 border border-border dark:border-border-dark rounded-lg bg-card dark:bg-card-dark" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text-primary dark:text-text-primary-dark mb-2">Valor (R$) *</label>
+                                <input type="number" id="shift-value" value="${shift?.value || ''}" class="w-full p-3 border border-border dark:border-border-dark rounded-lg bg-card dark:bg-card-dark" required>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-text-primary dark:text-text-primary-dark mb-2">Horário de Início *</label>
+                                <input type="time" id="shift-startTime" value="${shift?.startTime || ''}" class="w-full p-3 border border-border dark:border-border-dark rounded-lg bg-card dark:bg-card-dark" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text-primary dark:text-text-primary-dark mb-2">Horário de Fim</label>
+                                <input type="time" id="shift-endTime" value="${shift?.endTime || ''}" class="w-full p-3 border border-border dark:border-border-dark rounded-lg bg-card dark:bg-card-dark">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-text-primary dark:text-text-primary-dark mb-2">Descrição</label>
+                            <textarea id="shift-description" rows="3" class="w-full p-3 border border-border dark:border-border-dark rounded-lg bg-card dark:bg-card-dark">${shift?.description || ''}</textarea>
+                        </div>
+                         <div class="flex items-center">
+                            <input type="checkbox" id="shift-isPaid" ${shift?.isPaid ? 'checked' : ''} class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary">
+                            <label for="shift-isPaid" class="ml-2 block text-sm text-text-primary dark:text-text-primary-dark">Plantão já foi pago?</label>
+                        </div>
+                    </form>
+                `;
+
+                const actions = [
+                    { text: 'Cancelar', action: 'closeModal()' },
+                    ...(isEdit ? [{ text: 'Excluir', action: `deleteShift('${shiftId}')`, danger: true }] : []),
+                    { text: isEdit ? 'Salvar Alterações' : 'Adicionar Plantão', action: `saveShift(${isEdit ? `'${shiftId}'` : 'null'})`, primary: true }
+                ];
+
+                openModal(title, content, actions);
+            };
+
+            window.saveShift = (shiftId) => {
+                const isEdit = !!shiftId;
+                const patientId = parseInt(document.getElementById('shift-patient').value);
+                const date = document.getElementById('shift-date').value;
+                const value = parseFloat(document.getElementById('shift-value').value);
+                const startTime = document.getElementById('shift-startTime').value;
+                const endTime = document.getElementById('shift-endTime').value;
+                const description = document.getElementById('shift-description').value;
+                const isPaid = document.getElementById('shift-isPaid').checked;
+
+                if (!patientId || !date || !value || !startTime) {
+                    showToast('Por favor, preencha todos os campos obrigatórios.', 'error');
+                    return;
+                }
+
+                const shiftData = {
+                    id: isEdit ? parseInt(shiftId) : Date.now(),
+                    patientId,
+                    date,
+                    startTime,
+                    endTime,
+                    value,
+                    isPaid,
+                    paymentDate: isPaid ? (isEdit && db.shifts.find(s=>s.id == shiftId) ? db.shifts.find(s=>s.id == shiftId).paymentDate : new Date().toISOString().split('T')[0]) : null,
+                    description,
+                    recurring: { enabled: false },
+                    checklist: [],
+                    logEntries: []
+                };
+
+                if (isEdit) {
+                    const index = db.shifts.findIndex(s => s.id == shiftId);
+                    db.shifts[index] = shiftData;
+                    showToast('Plantão atualizado com sucesso!');
+                } else {
+                    db.shifts.push(shiftData);
+                    showToast('Plantão adicionado com sucesso!');
+                }
+
+                saveData();
+                closeModal();
+                renderContent(document.querySelector('.nav-tab.tab-active').dataset.tab);
+            };
+
+            window.deleteShift = (shiftId) => {
+                if (confirm('Tem certeza que deseja excluir este plantão?')) {
+                    db.shifts = db.shifts.filter(s => s.id != shiftId);
+                    saveData();
+                    closeModal();
+                    showToast('Plantão excluído com sucesso!');
+                    renderContent(document.querySelector('.nav-tab.tab-active').dataset.tab);
+                }
             };
 
             // --- INICIALIZAÇÃO GERAL ---
