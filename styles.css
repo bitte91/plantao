@@ -1,0 +1,42 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+/* Estilo para a tela de abertura */
+#splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Classe para ocultar a splash screen */
+#splash-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Estilo para o vídeo */
+#splash-video {
+  max-width: 90%;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+}
+
+/* Garante que o conteúdo principal apareça */
+#app-content {
+  visibility: hidden; /* Começa escondido */
+  padding: 20px;
+  transition: visibility 0s;
+}
