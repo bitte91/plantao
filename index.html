@@ -9,9 +9,13 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link id="manifest-link" rel="manifest">
-    <link rel="stylesheet" href="styles.css">
-    <script src="app.js" defer></script>
+
+    <!-- PWA Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3B82F6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="images/icon-192.png">
 
     <script>
         tailwind.config = {
@@ -197,18 +201,10 @@
     </style>
 </head>
 <body class="bg-background text-text-secondary dark:bg-background-dark dark:text-text-secondary-dark">
-    <div id="splash-screen">
-        <video id="splash-video" muted playsinline>
-            <source src="abertura.webm" type="video/webm">
-            <source src="abertura.mp4" type="video/mp4">
-            Seu navegador não suporta o elemento de vídeo.
-        </video>
-    </div>
 
-    <div id="app-content">
-        <div id="print-area"></div>
+    <div id="print-area"></div>
 
-        <header class="bg-gradient-to-br from-primary-600 to-primary-700 dark:from-primary-700 dark:to-primary-800 text-white shadow-lg no-print">
+    <header class="bg-gradient-to-br from-primary-600 to-primary-700 dark:from-primary-700 dark:to-primary-800 text-white shadow-lg no-print">
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
@@ -1011,72 +1007,40 @@
                     return;
                 }
 
-                const newPatient = db.patients.find(p => p.id === selectedPatientId);
-                if (!newPatient) {
-                    showToast('Paciente (novo) não encontrado.', 'error');
+                const patient = db.patients.find(p => p.id === selectedPatientId);
+                if (!patient) {
+                    showToast('Paciente não encontrado.', 'error');
                     return;
                 }
 
-                if (entryId) { // Editing an existing entry
-                    const originalPatient = db.patients.find(p => p.id == patientId);
-                    if (!originalPatient) {
-                        showToast('Paciente (original) não encontrado.', 'error');
-                        return;
+                if (!patient.logbook) patient.logbook = [];
+
+                const entryData = {
+                    id: entryId ? parseInt(entryId) : Date.now(),
+                    timestamp: entryId ? (patient.logbook.find(e => e.id == entryId)?.timestamp || new Date().toISOString()) : new Date().toISOString(),
+                    note,
+                    category,
+                    shiftId: null // Pode ser vinculado a um plantão no futuro
+                };
+
+                if (entryId) {
+                    const index = patient.logbook.findIndex(e => e.id == entryId);
+                    if (index !== -1) {
+                        patient.logbook[index] = entryData;
+                        showToast('Anotação atualizada com sucesso!');
                     }
-
-                    const entryIndex = originalPatient.logbook.findIndex(e => e.id == entryId);
-                    if (entryIndex === -1) {
-                        // This case should ideally not happen if the UI is correct, but as a safeguard:
-                        // Let's check if the entry somehow already migrated.
-                        const newPatientEntryIndex = newPatient.logbook ? newPatient.logbook.findIndex(e => e.id == entryId) : -1;
-                        if(newPatientEntryIndex !== -1) {
-                             // The entry is already in the new patient's logbook, just update it.
-                             const entryData = { ...newPatient.logbook[newPatientEntryIndex], note, category };
-                             newPatient.logbook[newPatientEntryIndex] = entryData;
-                        } else {
-                            showToast('Anotação original não encontrada para edição.', 'error');
-                            return;
-                        }
-                    } else {
-                        const originalEntry = originalPatient.logbook[entryIndex];
-
-                        const entryData = {
-                            ...originalEntry, // Preserve original timestamp and id
-                            note,
-                            category,
-                        };
-
-                        // If patient has changed, move the entry
-                        if (originalPatient.id !== newPatient.id) {
-                            originalPatient.logbook.splice(entryIndex, 1);
-                            if (!newPatient.logbook) newPatient.logbook = [];
-                            newPatient.logbook.push(entryData);
-                        } else {
-                            // If patient is the same, just update the data
-                            originalPatient.logbook[entryIndex] = entryData;
-                        }
-                    }
-                    showToast('Anotação atualizada com sucesso!');
-
-                } else { // Creating a new entry
-                    const entryData = {
-                        id: Date.now(),
-                        timestamp: new Date().toISOString(),
-                        note,
-                        category,
-                        shiftId: null
-                    };
-                    if (!newPatient.logbook) newPatient.logbook = [];
-                    newPatient.logbook.push(entryData);
+                } else {
+                    patient.logbook.push(entryData);
                     showToast('Anotação adicionada ao livro de bordo!');
                 }
 
                 saveData();
                 closeModal();
 
+                // Atualizar visualização se estivermos na aba do livro de bordo
                 const activeTab = document.querySelector('.nav-tab.tab-active').dataset.tab;
-                if (activeTab === 'logbook' || activeTab === 'patients') {
-                    renderContent(activeTab);
+                if (activeTab === 'logbook') {
+                    renderLogbook(mainContent);
                 }
             };
 
@@ -1328,7 +1292,17 @@
                 });
             };
 
-            const setupServiceWorker = () => { /* Implementação completa aqui... */ };
+            const setupServiceWorker = () => {
+                if ('serviceWorker' in navigator) {
+                    window.addEventListener('load', () => {
+                        navigator.serviceWorker.register('/sw.js').then(registration => {
+                            console.log('SW registered: ', registration);
+                        }).catch(registrationError => {
+                            console.log('SW registration failed: ', registrationError);
+                        });
+                    });
+                }
+            };
             const showToast = (message, type = 'success') => {
                 const toastContainer = document.getElementById('toast-container');
                 const toast = document.createElement('div');
@@ -1698,6 +1672,5 @@
             });
         });
     </script>
-    </div>
 </body>
 </html>
