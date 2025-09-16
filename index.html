@@ -1246,7 +1246,7 @@
                             }
                         });
                     }
-                }, 4000);
+                }, 3000);
             };
 
             // FUNCIONALIDADES DE PAGAMENTO
@@ -1492,6 +1492,62 @@
                     closeModal();
                     showToast('Plantão excluído com sucesso!');
                     renderContent(document.querySelector('.nav-tab.tab-active').dataset.tab);
+                }
+            };
+
+            window.savePatient = (patientId) => {
+                const isEdit = !!patientId;
+                const name = document.getElementById('patient-name').value;
+                const age = document.getElementById('patient-age').value;
+                const location = document.getElementById('patient-location').value;
+                const diagnosis = document.getElementById('patient-diagnosis').value;
+
+                if (!name || !age || !diagnosis) {
+                    showToast('Por favor, preencha todos os campos obrigatórios.', 'error');
+                    return;
+                }
+
+                if (isEdit) {
+                    const patient = db.patients.find(p => p.id == patientId);
+                    if (patient) {
+                        patient.name = name;
+                        patient.age = age;
+                        patient.location = location;
+                        patient.diagnosis = diagnosis;
+                        patient.contacts.emergency = document.getElementById('contact-emergency').value;
+                        patient.contacts.doctor = document.getElementById('contact-doctor').value;
+                        patient.contacts.family = document.getElementById('contact-family').value;
+                        showToast('Paciente atualizado com sucesso!');
+                    }
+                } else {
+                    const newPatient = {
+                        id: Date.now(),
+                        name,
+                        age,
+                        location,
+                        diagnosis,
+                        medications: [],
+                        contacts: { emergency: '', doctor: '', family: '' },
+                        appointments: [],
+                        logbook: []
+                    };
+                    db.patients.push(newPatient);
+                    showToast('Paciente adicionado com sucesso!');
+                }
+
+                saveData();
+                closeModal();
+                renderContent('patients');
+            };
+
+            window.deletePatient = (patientId) => {
+                if (confirm('Tem certeza que deseja excluir este paciente? Esta ação também removerá todos os plantões associados a ele.')) {
+                    db.patients = db.patients.filter(p => p.id != patientId);
+                    db.shifts = db.shifts.filter(s => s.patientId != patientId);
+                    saveData();
+                    closeModal();
+                    showToast('Paciente excluído com sucesso!');
+                    renderContent('patients');
                 }
             };
 
