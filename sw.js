@@ -6,7 +6,12 @@ const urlsToCache = [
   '/app.js',
   '/manifest.json',
   '/images/icon-192.svg',
-  '/images/icon-512.svg'
+  '/images/icon-512.svg',
+  'https://cdn.tailwindcss.com',
+  'https://cdn.jsdelivr.net/npm/chart.js',
+  'https://unpkg.com/lucide@latest',
+  'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
+  'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
 ];
 
 self.addEventListener('install', event => {
