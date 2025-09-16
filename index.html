@@ -10,6 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link id="manifest-link" rel="manifest">
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
 
     <script>
         tailwind.config = {
@@ -195,10 +197,18 @@
     </style>
 </head>
 <body class="bg-background text-text-secondary dark:bg-background-dark dark:text-text-secondary-dark">
+    <div id="splash-screen">
+        <video id="splash-video" muted playsinline>
+            <source src="abertura.webm" type="video/webm">
+            <source src="abertura.mp4" type="video/mp4">
+            Seu navegador não suporta o elemento de vídeo.
+        </video>
+    </div>
 
-    <div id="print-area"></div>
+    <div id="app-content">
+        <div id="print-area"></div>
 
-    <header class="bg-gradient-to-br from-primary-600 to-primary-700 dark:from-primary-700 dark:to-primary-800 text-white shadow-lg no-print">
+        <header class="bg-gradient-to-br from-primary-600 to-primary-700 dark:from-primary-700 dark:to-primary-800 text-white shadow-lg no-print">
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
@@ -1688,5 +1698,6 @@
             });
         });
     </script>
+    </div>
 </body>
 </html>
