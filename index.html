@@ -17,30 +17,30 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: { 
-                            DEFAULT: '#3B82F6', 
+                        primary: {
+                            DEFAULT: '#3B82F6',
                             dark: '#60A5FA',
                             50: '#EFF6FF',
-                            100: '#DBEAFE', 
+                            100: '#DBEAFE',
                             500: '#3B82F6',
                             600: '#2563EB',
                             700: '#1D4ED8'
                         },
-                        secondary: { 
-                            DEFAULT: '#8B5CF6', 
+                        secondary: {
+                            DEFAULT: '#8B5CF6',
                             dark: '#A78BFA',
                             50: '#F5F3FF',
                             100: '#EDE9FE',
                             500: '#8B5CF6',
                             600: '#7C3AED'
                         },
-                        background: { 
-                            DEFAULT: '#FAFBFC', 
-                            dark: '#0F1419' 
+                        background: {
+                            DEFAULT: '#FAFBFC',
+                            dark: '#0F1419'
                         },
-                        card: { 
-                            DEFAULT: '#FFFFFF', 
-                            dark: '#1F2937' 
+                        card: {
+                            DEFAULT: '#FFFFFF',
+                            dark: '#1F2937'
                         },
                         'text-primary': { DEFAULT: '#1F2937', dark: '#F9FAFB' },
                         'text-secondary': { DEFAULT: '#6B7280', dark: '#9CA3AF' },
@@ -111,23 +111,23 @@
             color: var(--c-text-secondary);
             transition: background-color 0.3s, color 0.3s;
         }
-        .tab-active { 
-            color: var(--c-primary); 
+        .tab-active {
+            color: var(--c-primary);
             font-weight: 600;
             background-color: var(--c-primary-light);
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
-        
+
         .modal-backdrop { background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); }
-        
+
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
 
         .toast-enter { animation: slide-in 0.5s forwards; }
         .toast-exit { animation: slide-out 0.5s forwards; }
-        
+
         .tab-content, .skeleton-loader {
             animation: fade-in-up 0.4s ease-out;
         }
@@ -138,54 +138,54 @@
             border-radius: 50%;
             margin: 1px auto;
         }
-        
+
         /* Estilos modernos adicionais */
         .card-hover {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
         .card-hover:hover {
             transform: translateY(-2px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
-        
+
         .loading-shimmer {
             background: linear-gradient(90deg, #f0f0f0 25%, transparent 37%, #f0f0f0 63%);
             background-size: 400% 100%;
             animation: shimmer 1.5s ease-in-out infinite;
         }
-        
+
         .dark .loading-shimmer {
             background: linear-gradient(90deg, #374151 25%, transparent 37%, #374151 63%);
             background-size: 400% 100%;
         }
-        
+
         .glass-effect {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        
+
         .dark .glass-effect {
             background: rgba(31, 41, 55, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
+
         .scrollbar-hide {
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
-        
+
         .scrollbar-hide::-webkit-scrollbar {
             display: none;
         }
-        
+
         .gradient-border {
             background: linear-gradient(45deg, #3B82F6, #8B5CF6, #10B981);
             background-size: 200% 200%;
             animation: shimmer 3s ease-in-out infinite;
         }
-        
+
         @media print {
             body * { visibility: hidden; }
             #print-area, #print-area * { visibility: visible; }
@@ -266,7 +266,7 @@
     <main id="main-content" class="container mx-auto p-4 md:p-6 no-print pb-20 md:pb-6">
         <!-- O conteúdo será renderizado aqui pelo JS -->
     </main>
-    
+
     <!-- Navegação mobile bottom -->
     <div class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200/50 dark:border-gray-700/50 md:hidden z-40 no-print">
         <div class="grid grid-cols-5 gap-1 px-2 py-2">
@@ -292,14 +292,14 @@
             </button>
         </div>
     </div>
-    
+
     <div id="modal-container"></div>
     <div id="toast-container" class="fixed bottom-4 right-4 z-50"></div>
 
     <button id="fab-add-shift" title="Adicionar Novo Plantão" class="fixed bottom-24 md:bottom-6 right-6 bg-gradient-to-r from-primary to-secondary dark:from-primary-dark dark:to-secondary-dark text-white w-14 h-14 rounded-full shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-300 flex items-center justify-center no-print z-30 group">
         <i data-lucide="plus" class="w-6 h-6 group-hover:rotate-90 transition-transform duration-300"></i>
     </button>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
@@ -317,60 +317,60 @@
                 } else {
                     db = {
                         patients: [
-                            { 
-                                id: Date.now() + 1, 
-                                name: 'Sr. João Silva', 
-                                age: 78, 
-                                location: 'Centro', 
-                                diagnosis: 'Hipertensão', 
+                            {
+                                id: Date.now() + 1,
+                                name: 'Sr. João Silva',
+                                age: 78,
+                                location: 'Centro',
+                                diagnosis: 'Hipertensão',
                                 medications: [{
-                                    id: Date.now() + 2, 
-                                    name: 'Losartana', 
-                                    dosage: '50mg', 
-                                    time: '08:00', 
-                                    notes: 'Após o café', 
+                                    id: Date.now() + 2,
+                                    name: 'Losartana',
+                                    dosage: '50mg',
+                                    time: '08:00',
+                                    notes: 'Após o café',
                                     reminderEnabled: true,
                                     lastTaken: null
-                                }], 
+                                }],
                                 contacts: {
                                     emergency: '+5511999999999',
                                     doctor: '+5511888888888',
                                     family: '+5511777777777'
                                 },
-                                appointments: [], 
+                                appointments: [],
                                 logbook: [{
-                                    id: Date.now()+3, 
-                                    timestamp: new Date().toISOString(), 
+                                    id: Date.now()+3,
+                                    timestamp: new Date().toISOString(),
                                     note: 'Paciente apresentou quadro estável.',
                                     category: 'observacao',
                                     shiftId: null
-                                }] 
+                                }]
                             },
-                            { 
-                                id: Date.now() + 4, 
-                                name: 'Dona Maria Oliveira', 
-                                age: 82, 
-                                location: 'Vila Nova', 
-                                diagnosis: 'Diabetes Tipo 2', 
-                                medications: [], 
+                            {
+                                id: Date.now() + 4,
+                                name: 'Dona Maria Oliveira',
+                                age: 82,
+                                location: 'Vila Nova',
+                                diagnosis: 'Diabetes Tipo 2',
+                                medications: [],
                                 contacts: {
                                     emergency: '',
                                     doctor: '',
                                     family: ''
                                 },
-                                appointments: [], 
-                                logbook: [] 
+                                appointments: [],
+                                logbook: []
                             },
                         ],
                         shifts: [
-                            { 
-                                id: Date.now() + 5, 
-                                patientId: Date.now() + 1, 
-                                date: '2025-09-15', 
+                            {
+                                id: Date.now() + 5,
+                                patientId: Date.now() + 1,
+                                date: '2025-09-15',
                                 startTime: '08:00',
-                                endTime: '20:00', 
-                                value: 150, 
-                                isPaid: true, 
+                                endTime: '20:00',
+                                value: 150,
+                                isPaid: true,
                                 paymentDate: '2025-09-16',
                                 paymentMethod: 'PIX',
                                 description: 'Plantão diurno',
@@ -382,14 +382,14 @@
                                 checklist: [],
                                 logEntries: []
                             },
-                            { 
-                                id: Date.now() + 6, 
-                                patientId: Date.now() + 4, 
-                                date: '2025-09-16', 
+                            {
+                                id: Date.now() + 6,
+                                patientId: Date.now() + 4,
+                                date: '2025-09-16',
                                 startTime: '20:00',
-                                endTime: '08:00', 
-                                value: 180, 
-                                isPaid: false, 
+                                endTime: '08:00',
+                                value: 180,
+                                isPaid: false,
                                 paymentDate: null,
                                 paymentMethod: '',
                                 description: 'Plantão noturno',
@@ -427,11 +427,11 @@
             };
 
             tabs.forEach(tab => tab.addEventListener('click', () => switchTab(tab.dataset.tab)));
-            
+
             // Configurar navegação mobile
             const mobileNavBtns = document.querySelectorAll('.mobile-nav-btn');
             mobileNavBtns.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
-            
+
             // Atualizar relógio em tempo real
             const updateClock = () => {
                 const now = new Date();
@@ -454,7 +454,7 @@
                 (renderFunctions[tabId] || (() => {}))(mainContent);
                 lucide.createIcons();
             };
-            
+
              const renderSkeletonLoader = (element) => {
                  element.innerHTML = `<div class="skeleton-loader space-y-6 animate-fade-in-up">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -478,7 +478,7 @@
                     <p class="text-sm text-text-secondary dark:text-text-secondary-dark">${message}</p>
                 </div>`;
             };
-            
+
             // SISTEMA DE MODAIS
             const openModal = (title, content, actions = []) => {
                 const modal = document.createElement('div');
@@ -516,19 +516,19 @@
 
             const scheduleReminder = (medication, patientName) => {
                 if (!notificationPermission) return;
-                
+
                 const now = new Date();
                 const reminderTime = new Date();
                 const [hours, minutes] = medication.time.split(':');
                 reminderTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-                
+
                 // Se o horário já passou hoje, agendar para amanhã
                 if (reminderTime <= now) {
                     reminderTime.setDate(reminderTime.getDate() + 1);
                 }
-                
+
                 const timeToReminder = reminderTime.getTime() - now.getTime() - (db.settings.reminderAdvance * 60 * 1000);
-                
+
                 if (timeToReminder > 0) {
                     const timeoutId = setTimeout(() => {
                         new Notification(`💊 Hora da Medicação`, {
@@ -539,7 +539,7 @@
                             requireInteraction: true
                         });
                     }, timeToReminder);
-                    
+
                     activeReminders.set(medication.id, timeoutId);
                 }
             };
@@ -555,7 +555,7 @@
                 // Cancela todos os lembretes ativos
                 activeReminders.forEach(timeoutId => clearTimeout(timeoutId));
                 activeReminders.clear();
-                
+
                 // Reagenda todos os lembretes habilitados
                 db.patients.forEach(patient => {
                     patient.medications?.forEach(medication => {
@@ -572,20 +572,20 @@
                 const month = date.getMonth();
                 const firstDay = new Date(year, month, 1).getDay();
                 const daysInMonth = new Date(year, month + 1, 0).getDate();
-                
+
                 let grid = '';
-                
+
                 // Dias vazios no início
                 for (let i = 0; i < firstDay; i++) {
                     grid += '<div class="h-20 md:h-24"></div>';
                 }
-                
+
                 // Dias do mês
                 for (let day = 1; day <= daysInMonth; day++) {
                     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                     const shiftsOnDay = db.shifts.filter(s => s.date === dateStr);
                     const isToday = dateStr === new Date().toISOString().split('T')[0];
-                    
+
                     grid += `
                         <div class="calendar-day h-20 md:h-24 p-1 border border-border dark:border-border-dark rounded cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${isToday ? 'bg-primary/10 border-primary dark:border-primary-dark' : ''}" data-date="${dateStr}">
                             <div class="text-sm font-medium text-text-primary dark:text-text-primary-dark">${day}</div>
@@ -593,7 +593,7 @@
                         </div>
                     `;
                 }
-                
+
                 return grid;
             };
 
@@ -601,18 +601,18 @@
                 const shiftsOnDay = db.shifts.filter(s => s.date === selectedDate);
                 const dayDetailsTitle = document.getElementById('day-details-title');
                 const dayDetailsContent = document.getElementById('day-details-content');
-                
+
                 if (!dayDetailsTitle || !dayDetailsContent) return;
-                
+
                 const formattedDate = new Date(selectedDate + 'T00:00:00').toLocaleDateString('pt-BR', {
                     weekday: 'long',
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
                 });
-                
+
                 dayDetailsTitle.textContent = formattedDate;
-                
+
                 if (shiftsOnDay.length === 0) {
                     dayDetailsContent.innerHTML = `
                         <p class="text-text-secondary dark:text-text-secondary-dark mb-4">Nenhum plantão agendado para este dia.</p>
@@ -651,7 +651,7 @@
                         </button>
                     `;
                 }
-                
+
                 lucide.createIcons();
             };
 
@@ -671,7 +671,7 @@
                 const monthlyRevenue = monthlyShifts.reduce((sum, s) => sum + s.value, 0);
                 const lastMonthRevenue = 2800; // Simulado para demo
                 const revenueGrowth = lastMonthRevenue > 0 ? ((monthlyRevenue - lastMonthRevenue) / lastMonthRevenue * 100).toFixed(1) : 0;
-                
+
                 element.innerHTML = `
                     <div class="tab-content space-y-6">
                         <!-- Cards de métricas principais -->
@@ -689,7 +689,7 @@
                                     <p class="text-3xl font-bold text-gray-900 dark:text-white">${totalRevenue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                                 </div>
                             </div>
-                            
+
                             <!-- Card Total Pago -->
                             <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 card-hover">
                                 <div class="flex items-center justify-between mb-4">
@@ -703,7 +703,7 @@
                                     <p class="text-3xl font-bold text-gray-900 dark:text-white">${totalPaid.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                                 </div>
                             </div>
-                            
+
                             <!-- Card Pendente -->
                             <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 card-hover">
                                 <div class="flex items-center justify-between mb-4">
@@ -718,7 +718,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Seção de insights -->
                         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 animate-fade-in-up">
                             <div class="flex items-center justify-between mb-6">
@@ -756,7 +756,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Próximos plantões -->
                         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden animate-fade-in-up">
                             <div class="p-6 border-b border-gray-200 dark:border-gray-700">
@@ -771,7 +771,7 @@
                                     const shiftDate = new Date(shift.date + 'T00:00:00');
                                     const isToday = shift.date === today;
                                     const isTomorrow = shift.date === new Date(Date.now() + 86400000).toISOString().split('T')[0];
-                                    
+
                                     return `
                                         <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer" onclick="window.openShiftModal('${shift.date}', '${shift.id}')">
                                             <div class="flex items-center justify-between">
@@ -863,10 +863,10 @@
                     e.currentTarget.classList.add('ring-2', 'ring-primary', 'dark:ring-primary-dark');
                 }));
             };
-            
+
             const renderLogbook = (element) => {
                 const allLogEntries = [];
-                
+
                 // Combinar entradas do livro de bordo dos pacientes com informações do paciente
                 db.patients.forEach(patient => {
                     if (patient.logbook && patient.logbook.length > 0) {
@@ -879,10 +879,10 @@
                         });
                     }
                 });
-                
+
                 // Ordenar por data (mais recente primeiro)
                 allLogEntries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-                
+
                 element.innerHTML = `
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-bold text-text-primary dark:text-text-primary-dark">Livro de Bordo</h2>
@@ -890,7 +890,7 @@
                             <i data-lucide="plus"></i> Nova Anotação
                         </button>
                     </div>
-                    
+
                     <div class="grid gap-6">
                         ${allLogEntries.length > 0 ? `
                             <div class="bg-card dark:bg-card-dark rounded-lg shadow-custom">
@@ -934,14 +934,14 @@
                 const isEdit = !!entryId;
                 let entry = null;
                 let patient = null;
-                
+
                 if (isEdit && patientId) {
                     patient = db.patients.find(p => p.id == patientId);
                     entry = patient?.logbook?.find(e => e.id == entryId);
                 }
-                
+
                 const title = isEdit ? 'Editar Anotação' : 'Nova Anotação no Livro de Bordo';
-                
+
                 const content = `
                     <form id="logbook-form" class="space-y-4">
                         <div>
@@ -951,7 +951,7 @@
                                 ${db.patients.map(p => `<option value="${p.id}" ${patient?.id == p.id ? 'selected' : ''}>${p.name}</option>`).join('')}
                             </select>
                         </div>
-                        
+
                         <div>
                             <label class="block text-sm font-medium text-text-primary dark:text-text-primary-dark mb-2">Categoria</label>
                             <select id="logbook-category" class="w-full p-3 border border-border dark:border-border-dark rounded-lg bg-card dark:bg-card-dark text-text-secondary dark:text-text-secondary-dark">
@@ -964,12 +964,12 @@
                                 <option value="geral" ${entry?.category === 'geral' ? 'selected' : ''}>Geral</option>
                             </select>
                         </div>
-                        
+
                         <div>
                             <label class="block text-sm font-medium text-text-primary dark:text-text-primary-dark mb-2">Anotação</label>
                             <textarea id="logbook-note" rows="6" class="w-full p-3 border border-border dark:border-border-dark rounded-lg bg-card dark:bg-card-dark text-text-secondary dark:text-text-secondary-dark" placeholder="Descreva detalhadamente o que aconteceu, observações sobre o estado do paciente, medicações administradas, etc." required>${entry?.note || ''}</textarea>
                         </div>
-                        
+
                         <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
                             <h4 class="font-medium text-blue-800 dark:text-blue-200 mb-2">💡 Dicas para uma boa anotação:</h4>
                             <ul class="text-sm text-blue-700 dark:text-blue-300 space-y-1">
@@ -981,13 +981,13 @@
                         </div>
                     </form>
                 `;
-                
+
                 const actions = [
                     { text: 'Cancelar', action: 'closeModal()' },
                     ...(isEdit ? [{ text: 'Excluir', action: `deleteLogbookEntry('${entryId}', '${patientId}')`, danger: true }] : []),
                     { text: isEdit ? 'Salvar' : 'Adicionar', action: `saveLogbookEntry(${isEdit ? `'${entryId}', '${patientId}'` : 'null, null'})`, primary: true }
                 ];
-                
+
                 openModal(title, content, actions);
             };
 
@@ -995,46 +995,78 @@
                 const selectedPatientId = parseInt(document.getElementById('logbook-patient').value);
                 const category = document.getElementById('logbook-category').value;
                 const note = document.getElementById('logbook-note').value.trim();
-                
+
                 if (!selectedPatientId || !note) {
                     showToast('Por favor, preencha todos os campos obrigatórios.', 'error');
                     return;
                 }
-                
-                const patient = db.patients.find(p => p.id === selectedPatientId);
-                if (!patient) {
-                    showToast('Paciente não encontrado.', 'error');
+
+                const newPatient = db.patients.find(p => p.id === selectedPatientId);
+                if (!newPatient) {
+                    showToast('Paciente (novo) não encontrado.', 'error');
                     return;
                 }
-                
-                if (!patient.logbook) patient.logbook = [];
-                
-                const entryData = {
-                    id: entryId ? parseInt(entryId) : Date.now(),
-                    timestamp: entryId ? (patient.logbook.find(e => e.id == entryId)?.timestamp || new Date().toISOString()) : new Date().toISOString(),
-                    note,
-                    category,
-                    shiftId: null // Pode ser vinculado a um plantão no futuro
-                };
-                
-                if (entryId) {
-                    const index = patient.logbook.findIndex(e => e.id == entryId);
-                    if (index !== -1) {
-                        patient.logbook[index] = entryData;
-                        showToast('Anotação atualizada com sucesso!');
+
+                if (entryId) { // Editing an existing entry
+                    const originalPatient = db.patients.find(p => p.id == patientId);
+                    if (!originalPatient) {
+                        showToast('Paciente (original) não encontrado.', 'error');
+                        return;
                     }
-                } else {
-                    patient.logbook.push(entryData);
+
+                    const entryIndex = originalPatient.logbook.findIndex(e => e.id == entryId);
+                    if (entryIndex === -1) {
+                        // This case should ideally not happen if the UI is correct, but as a safeguard:
+                        // Let's check if the entry somehow already migrated.
+                        const newPatientEntryIndex = newPatient.logbook ? newPatient.logbook.findIndex(e => e.id == entryId) : -1;
+                        if(newPatientEntryIndex !== -1) {
+                             // The entry is already in the new patient's logbook, just update it.
+                             const entryData = { ...newPatient.logbook[newPatientEntryIndex], note, category };
+                             newPatient.logbook[newPatientEntryIndex] = entryData;
+                        } else {
+                            showToast('Anotação original não encontrada para edição.', 'error');
+                            return;
+                        }
+                    } else {
+                        const originalEntry = originalPatient.logbook[entryIndex];
+
+                        const entryData = {
+                            ...originalEntry, // Preserve original timestamp and id
+                            note,
+                            category,
+                        };
+
+                        // If patient has changed, move the entry
+                        if (originalPatient.id !== newPatient.id) {
+                            originalPatient.logbook.splice(entryIndex, 1);
+                            if (!newPatient.logbook) newPatient.logbook = [];
+                            newPatient.logbook.push(entryData);
+                        } else {
+                            // If patient is the same, just update the data
+                            originalPatient.logbook[entryIndex] = entryData;
+                        }
+                    }
+                    showToast('Anotação atualizada com sucesso!');
+
+                } else { // Creating a new entry
+                    const entryData = {
+                        id: Date.now(),
+                        timestamp: new Date().toISOString(),
+                        note,
+                        category,
+                        shiftId: null
+                    };
+                    if (!newPatient.logbook) newPatient.logbook = [];
+                    newPatient.logbook.push(entryData);
                     showToast('Anotação adicionada ao livro de bordo!');
                 }
-                
+
                 saveData();
                 closeModal();
-                
-                // Atualizar visualização se estivermos na aba do livro de bordo
+
                 const activeTab = document.querySelector('.nav-tab.tab-active').dataset.tab;
-                if (activeTab === 'logbook') {
-                    renderLogbook(mainContent);
+                if (activeTab === 'logbook' || activeTab === 'patients') {
+                    renderContent(activeTab);
                 }
             };
 
@@ -1050,7 +1082,7 @@
                         saveData();
                         closeModal();
                         showToast('Anotação excluída com sucesso!');
-                        
+
                         // Atualizar visualização
                         const activeTab = document.querySelector('.nav-tab.tab-active').dataset.tab;
                         if (activeTab === 'logbook') {
@@ -1070,7 +1102,7 @@
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
                                     </div>
-                                    <input type="text" id="patient-search" placeholder="Buscar pacientes..." 
+                                    <input type="text" id="patient-search" placeholder="Buscar pacientes..."
                                            class="w-full md:w-64 pl-10 pr-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200">
                                 </div>
                                 <button onclick="window.openPatientDetailModal()" class="bg-gradient-to-r from-primary to-secondary dark:from-primary-dark dark:to-secondary-dark text-white px-4 py-2 rounded-xl hover:shadow-lg transition-all duration-200 flex items-center gap-2 font-medium">
@@ -1079,7 +1111,7 @@
                                 </button>
                             </div>
                         </div>
-                        
+
                         <div id="patient-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                             ${db.patients.length > 0 ? db.patients.map(patient => `
                                 <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 card-hover animate-fade-in-up" onclick="window.openPatientDetailModal('${patient.id}')">
@@ -1106,24 +1138,24 @@
                         </div>
                     </div>
                 `;
-                
+
                 // Adicionar funcionalidade de busca
                 const searchInput = element.querySelector('#patient-search');
                 if (searchInput) {
                     searchInput.addEventListener('input', (e) => {
                         const searchTerm = e.target.value.toLowerCase();
                         const patientCards = element.querySelectorAll('#patient-list > div');
-                        
+
                         patientCards.forEach(card => {
                             const patientName = card.querySelector('h3').textContent.toLowerCase();
                             const patientDiagnosis = card.querySelector('p').textContent.toLowerCase();
                             const isVisible = patientName.includes(searchTerm) || patientDiagnosis.includes(searchTerm);
-                            
+
                             card.style.display = isVisible ? 'block' : 'none';
                         });
                     });
                 }
-                
+
                 lucide.createIcons();
             };
 
@@ -1183,7 +1215,7 @@
                 `;
                 lucide.createIcons();
             };
-            
+
             const renderFinancesTable = () => {
                 const sortedShifts = [...db.shifts].sort((a,b) => new Date(b.date) - new Date(a.date));
 
@@ -1290,28 +1322,28 @@
             const showToast = (message, type = 'success') => {
                 const toastContainer = document.getElementById('toast-container');
                 const toast = document.createElement('div');
-                
+
                 const icons = {
                     success: 'check-circle',
                     error: 'x-circle',
                     warning: 'alert-triangle',
                     info: 'info'
                 };
-                
+
                 const colors = {
                     success: 'bg-white dark:bg-gray-800 border-l-4 border-green-500 text-gray-900 dark:text-white shadow-lg',
                     error: 'bg-white dark:bg-gray-800 border-l-4 border-red-500 text-gray-900 dark:text-white shadow-lg',
                     warning: 'bg-white dark:bg-gray-800 border-l-4 border-yellow-500 text-gray-900 dark:text-white shadow-lg',
                     info: 'bg-white dark:bg-gray-800 border-l-4 border-blue-500 text-gray-900 dark:text-white shadow-lg'
                 };
-                
+
                 const iconColors = {
                     success: 'text-green-500',
                     error: 'text-red-500',
                     warning: 'text-yellow-500',
                     info: 'text-blue-500'
                 };
-                
+
                 toast.className = `p-4 rounded-lg mb-3 toast-enter ${colors[type]} backdrop-blur-md border border-gray-200 dark:border-gray-700 max-w-sm`;
                 toast.innerHTML = `
                     <div class="flex items-start space-x-3">
@@ -1326,10 +1358,10 @@
                         </button>
                     </div>
                 `;
-                
+
                 toastContainer.appendChild(toast);
                 lucide.createIcons();
-                
+
                 setTimeout(() => {
                     if (toast.parentElement) {
                         toast.classList.remove('toast-enter');
@@ -1350,13 +1382,13 @@
                     showToast('Plantão não encontrado.', 'error');
                     return;
                 }
-                
+
                 shift.isPaid = !shift.isPaid;
                 shift.paymentDate = shift.isPaid ? new Date().toISOString().split('T')[0] : null;
-                
+
                 saveData();
                 showToast(`Plantão marcado como ${shift.isPaid ? 'pago' : 'pendente'}!`);
-                
+
                 // Atualizar visualização
                 const activeTab = document.querySelector('.nav-tab.tab-active').dataset.tab;
                 if (activeTab === 'finances') {
@@ -1371,7 +1403,7 @@
                 const isEdit = !!patientId;
                 const patient = isEdit ? db.patients.find(p => p.id == patientId) : null;
                 const title = isEdit ? `Detalhes de ${patient.name}` : 'Novo Paciente';
-                
+
                 const content = `
                     <div class="space-y-6">
                         <form id="patient-form" class="space-y-4">
@@ -1394,7 +1426,7 @@
                                 <textarea id="patient-diagnosis" rows="2" class="w-full p-3 border border-border dark:border-border-dark rounded-lg bg-card dark:bg-card-dark text-text-secondary dark:text-text-secondary-dark" required>${patient?.diagnosis || ''}</textarea>
                             </div>
                         </form>
-                        
+
                         ${isEdit ? `
                             <div class="border-t border-border dark:border-border-dark pt-6">
                                 <h4 class="font-semibold text-text-primary dark:text-text-primary-dark mb-4">Contatos de Emergência</h4>
@@ -1413,7 +1445,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="border-t border-border dark:border-border-dark pt-6">
                                 <div class="flex justify-between items-center mb-4">
                                     <h4 class="font-semibold text-text-primary dark:text-text-primary-dark">Medicações</h4>
@@ -1447,7 +1479,7 @@
                                     `).join('') || '<p class="text-gray-500 text-center py-4">Nenhuma medicação cadastrada</p>'}
                                 </div>
                             </div>
-                            
+
                             <div class="border-t border-border dark:border-border-dark pt-6">
                                 <div class="flex justify-between items-center mb-4">
                                     <h4 class="font-semibold text-text-primary dark:text-text-primary-dark">Histórico Recente</h4>
@@ -1470,13 +1502,13 @@
                         ` : ''}
                     </div>
                 `;
-                
+
                 const actions = [
                     { text: 'Cancelar', action: 'closeModal()' },
                     ...(isEdit ? [{ text: 'Excluir Paciente', action: `deletePatient('${patientId}')`, danger: true }] : []),
                     { text: isEdit ? 'Salvar Alterações' : 'Criar Paciente', action: `savePatient(${isEdit ? `'${patientId}'` : 'null'})`, primary: true }
                 ];
-                
+
                 openModal(title, content, actions);
             };
 
@@ -1650,7 +1682,7 @@
             setupTheme();
             setupServiceWorker();
             switchTab('dashboard');
-            
+
             document.getElementById('fab-add-shift').addEventListener('click', () => {
                 window.openShiftModal(new Date().toISOString().split('T')[0]);
             });
@@ -1658,4 +1690,3 @@
     </script>
 </body>
 </html>
-
