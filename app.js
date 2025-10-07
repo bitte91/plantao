@@ -11,10 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     db = {
                         transactions: [
-                            { id: 1, type: 'income', value: 1500, description: 'Salário', date: '2025-10-01', paymentMethod: 'PIX' },
-                            { id: 2, type: 'expense', value: 50, description: 'Almoço', date: '2025-10-02', category: 'Comida' },
-                            { id: 3, type: 'expense', value: 25, description: 'Transporte', date: '2025-10-03', category: 'Transporte' },
-                            { id: 4, type: 'income', value: 200, description: 'Freelance', date: '2025-10-05', paymentMethod: 'Dinheiro' }
+                            { id: 1, type: 'income', value: 1500, date: '2025-10-01', paymentMethod: 'PIX' },
+                            { id: 2, type: 'expense', value: 50, date: '2025-10-02', category: 'Comida', paymentMethod: 'Cartão' },
+                            { id: 3, type: 'expense', value: 25, date: '2025-10-03', category: 'Transporte', paymentMethod: 'Dinheiro' },
+                            { id: 4, type: 'income', value: 200, date: '2025-10-05', paymentMethod: 'Dinheiro' }
                         ],
                         settings: {
                             theme: 'light',
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     ${recentTransactions.map(t => `
                                         <div class="flex justify-between items-center">
                                             <div>
-                                                <p class="font-semibold">${t.description}</p>
+                                                <p class="font-semibold">${t.type === 'income' ? 'Entrada' : t.category}</p>
                                                 <p class="text-sm text-gray-500">${new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR')}</p>
                                             </div>
                                             <p class="font-bold ${t.type === 'income' ? 'text-green-500' : 'text-red-500'}">
@@ -110,16 +110,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const ctx = document.getElementById('overview-chart').getContext('2d');
                 new Chart(ctx, {
-                    type: 'bar',
+                    type: 'pie',
                     data: {
                         labels: ['Receitas', 'Despesas'],
                         datasets: [{
                             label: 'Valor',
                             data: [totalIncome, totalExpenses],
-                            backgroundColor: ['#10B981', '#EF4444']
+                            backgroundColor: ['#10B981', '#EF4444'],
+                            hoverOffset: 4
                         }]
                     },
-                    options: { responsive: true, plugins: { legend: { display: false } } }
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            }
+                        }
+                    }
                 });
             };
 
@@ -133,8 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                 ${transactions.map(t => `
                                     <div class="flex justify-between items-center p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                                         <div>
-                                            <p class="font-semibold">${t.description}</p>
-                                            <p class="text-sm text-gray-500">${new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR')} - ${t.type === 'income' ? t.paymentMethod : t.category}</p>
+                                            <p class="font-semibold">${t.type === 'income' ? 'Entrada' : t.category}</p>
+                                            <p class="text-sm text-gray-500">${new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR')} - ${t.paymentMethod}${t.type === 'expense' ? ' - ' + t.category : ''}</p>
                                         </div>
                                         <div class="flex items-center gap-4">
                                             <p class="font-bold ${t.type === 'income' ? 'text-green-500' : 'text-red-500'}">
@@ -193,13 +201,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div>
                             <label class="block text-sm font-medium">Tipo</label>
                             <select id="transaction-type" class="w-full p-2 border rounded">
-                                <option value="income" ${transaction.type === 'income' ? 'selected' : ''}>Receita</option>
-                                <option value="expense" ${transaction.type === 'expense' ? 'selected' : ''}>Despesa</option>
+                                <option value="income" ${transaction.type === 'income' ? 'selected' : ''}>Entrada</option>
+                                <option value="expense" ${transaction.type === 'expense' ? 'selected' : ''}>Saída</option>
                             </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium">Descrição</label>
-                            <input type="text" id="transaction-description" value="${transaction.description || ''}" class="w-full p-2 border rounded" required>
                         </div>
                         <div>
                             <label class="block text-sm font-medium">Valor (R$)</label>
@@ -209,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <label class="block text-sm font-medium">Data</label>
                             <input type="date" id="transaction-date" value="${transaction.date || new Date().toISOString().split('T')[0]}" class="w-full p-2 border rounded" required>
                         </div>
-                        <div id="payment-method-field" class="${transaction.type === 'expense' ? 'hidden' : ''}">
+                        <div id="payment-method-field">
                             <label class="block text-sm font-medium">Método de Pagamento</label>
                             <select id="transaction-payment-method" class="w-full p-2 border rounded">
                                 <option value="Dinheiro" ${transaction.paymentMethod === 'Dinheiro' ? 'selected' : ''}>Dinheiro</option>
@@ -236,7 +240,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 document.getElementById('transaction-type').addEventListener('change', (e) => {
                     const type = e.target.value;
-                    document.getElementById('payment-method-field').classList.toggle('hidden', type === 'expense');
                     document.getElementById('category-field').classList.toggle('hidden', type === 'income');
                 });
             };
@@ -244,21 +247,19 @@ document.addEventListener('DOMContentLoaded', () => {
             window.saveTransaction = (id) => {
                 const isEdit = !!id;
                 const type = document.getElementById('transaction-type').value;
-                const description = document.getElementById('transaction-description').value;
                 const value = parseFloat(document.getElementById('transaction-value').value);
                 const date = document.getElementById('transaction-date').value;
                 const paymentMethod = document.getElementById('transaction-payment-method').value;
                 const category = document.getElementById('transaction-category').value;
 
-                if (!description || !value || !date) {
+                if (!value || !date) {
                     showToast('Por favor, preencha todos os campos.', 'error');
                     return;
                 }
 
                 const transaction = {
                     id: isEdit ? parseInt(id) : Date.now(),
-                    type, description, value, date,
-                    paymentMethod: type === 'income' ? paymentMethod : null,
+                    type, value, date, paymentMethod,
                     category: type === 'expense' ? category : null
                 };
 
