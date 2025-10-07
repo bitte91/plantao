@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cuidashift - Gerenciador de Plantões com IA</title>
+    <title>Ferrari Manauara - Controle de Orçamento Pessoal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -212,8 +212,8 @@
                         <span class="text-xl">💙</span>
                     </div>
                     <div>
-                        <h1 class="text-xl font-bold">CuidaShift</h1>
-                        <p class="text-xs text-white/80">Gerenciador de Plantões</p>
+                        <h1 class="text-xl font-bold">Ferrari Manauara</h1>
+                        <p class="text-xs text-white/80">Controle de Orçamento Pessoal</p>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -244,25 +244,9 @@
                     <i data-lucide="home" class="w-4 h-4"></i>
                     <span class="hidden sm:inline font-medium">Dashboard</span>
                 </button>
-                <button data-tab="shifts" class="nav-tab flex items-center gap-2 py-3 px-4 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-dark transition-all duration-200 flex-shrink-0 rounded-t-lg relative">
-                    <i data-lucide="calendar" class="w-4 h-4"></i>
-                    <span class="hidden sm:inline font-medium">Plantões</span>
-                </button>
-                <button data-tab="patients" class="nav-tab flex items-center gap-2 py-3 px-4 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-dark transition-all duration-200 flex-shrink-0 rounded-t-lg relative">
-                    <i data-lucide="users" class="w-4 h-4"></i>
-                    <span class="hidden sm:inline font-medium">Pacientes</span>
-                </button>
-                <button data-tab="logbook" class="nav-tab flex items-center gap-2 py-3 px-4 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-dark transition-all duration-200 flex-shrink-0 rounded-t-lg relative">
-                    <i data-lucide="book-open" class="w-4 h-4"></i>
-                    <span class="hidden sm:inline font-medium">Livro de Bordo</span>
-                </button>
-                <button data-tab="finances" class="nav-tab flex items-center gap-2 py-3 px-4 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-dark transition-all duration-200 flex-shrink-0 rounded-t-lg relative">
+                <button data-tab="transactions" class="nav-tab flex items-center gap-2 py-3 px-4 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-dark transition-all duration-200 flex-shrink-0 rounded-t-lg relative">
                     <i data-lucide="dollar-sign" class="w-4 h-4"></i>
-                    <span class="hidden sm:inline font-medium">Finanças</span>
-                </button>
-                <button data-tab="reports" class="nav-tab flex items-center gap-2 py-3 px-4 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-dark transition-all duration-200 flex-shrink-0 rounded-t-lg relative">
-                    <i data-lucide="file-text" class="w-4 h-4"></i>
-                    <span class="hidden sm:inline font-medium">Relatórios</span>
+                    <span class="hidden sm:inline font-medium">Transações</span>
                 </button>
                 <button data-tab="settings" class="nav-tab flex items-center gap-2 py-3 px-4 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-dark transition-all duration-200 flex-shrink-0 rounded-t-lg relative">
                     <i data-lucide="settings" class="w-4 h-4"></i>
@@ -278,22 +262,14 @@
 
     <!-- Navegação mobile bottom -->
     <div class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200/50 dark:border-gray-700/50 md:hidden z-40 no-print">
-        <div class="grid grid-cols-5 gap-1 px-2 py-2">
+        <div class="grid grid-cols-3 gap-1 px-2 py-2">
             <button data-tab="dashboard" class="mobile-nav-btn flex flex-col items-center justify-center p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary-dark transition-colors">
                 <i data-lucide="home" class="w-5 h-5 mb-1"></i>
                 <span class="text-xs font-medium">Home</span>
             </button>
-            <button data-tab="shifts" class="mobile-nav-btn flex flex-col items-center justify-center p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary-dark transition-colors">
-                <i data-lucide="calendar" class="w-5 h-5 mb-1"></i>
-                <span class="text-xs font-medium">Plantões</span>
-            </button>
-            <button data-tab="patients" class="mobile-nav-btn flex flex-col items-center justify-center p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary-dark transition-colors">
-                <i data-lucide="users" class="w-5 h-5 mb-1"></i>
-                <span class="text-xs font-medium">Pacientes</span>
-            </button>
-            <button data-tab="finances" class="mobile-nav-btn flex flex-col items-center justify-center p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary-dark transition-colors">
+            <button data-tab="transactions" class="mobile-nav-btn flex flex-col items-center justify-center p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary-dark transition-colors">
                 <i data-lucide="dollar-sign" class="w-5 h-5 mb-1"></i>
-                <span class="text-xs font-medium">Finanças</span>
+                <span class="text-xs font-medium">Transações</span>
             </button>
             <button data-tab="settings" class="mobile-nav-btn flex flex-col items-center justify-center p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary-dark transition-colors">
                 <i data-lucide="settings" class="w-5 h-5 mb-1"></i>
@@ -305,7 +281,7 @@
     <div id="modal-container"></div>
     <div id="toast-container" class="fixed bottom-4 right-4 z-50"></div>
 
-    <button id="fab-add-shift" title="Adicionar Novo Plantão" class="fixed bottom-24 md:bottom-6 right-6 bg-gradient-to-r from-primary to-secondary dark:from-primary-dark dark:to-secondary-dark text-white w-14 h-14 rounded-full shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-300 flex items-center justify-center no-print z-30 group">
+    <button id="fab-add-transaction" title="Adicionar Nova Transação" class="fixed bottom-24 md:bottom-6 right-6 bg-gradient-to-r from-primary to-secondary dark:from-primary-dark dark:to-secondary-dark text-white w-14 h-14 rounded-full shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-300 flex items-center justify-center no-print z-30 group">
         <i data-lucide="plus" class="w-6 h-6 group-hover:rotate-90 transition-transform duration-300"></i>
     </button>
 
