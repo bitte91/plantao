@@ -1,20 +1,25 @@
 {
-  "name": "CuidaShift",
-  "short_name": "CuidaShift",
+  "name": "Ferrari Manauara",
+  "short_name": "Ferrari",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#3B82F6",
-  "description": "Gerenciador de Plantões com IA",
+  "theme_color": "#DC2626",
+  "description": "Controle de Orçamento Pessoal",
   "icons": [
     {
-      "src": "images/icon-192.svg",
-      "type": "image/svg+xml",
+      "src": "images/apple-touch-icon-180x180.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    },
+    {
+      "src": "images/apple-touch-icon-192x192.png",
+      "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "images/icon-512.svg",
-      "type": "image/svg+xml",
+      "src": "images/apple-touch-icon-512x512.png",
+      "type": "image/png",
       "sizes": "512x512"
     }
   ]
