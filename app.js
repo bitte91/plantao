@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let db = { transactions: [], settings: { theme: 'light', userName: 'Usuário' } };
     let currentChart = null;
+    let deferredPrompt;
 
     /**
      * Saves the current state of the database to localStorage.
@@ -82,21 +83,21 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="bg-green-100 dark:bg-green-900/30 p-3 rounded-xl"><i data-lucide="arrow-up-circle" class="w-6 h-6 text-green-600 dark:text-green-400"></i></div>
                         <div>
                             <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Receita Total</h3>
-                            <p class="text-2xl font-bold text-green-500">${totalIncome.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                            <p class="text-xl md:text-2xl font-bold text-green-500">${totalIncome.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                         </div>
                     </div>
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 flex items-center gap-4">
                         <div class="bg-red-100 dark:bg-red-900/30 p-3 rounded-xl"><i data-lucide="arrow-down-circle" class="w-6 h-6 text-red-600 dark:text-red-400"></i></div>
                         <div>
                             <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Despesas Totais</h3>
-                            <p class="text-2xl font-bold text-red-500">${totalExpenses.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                            <p class="text-xl md:text-2xl font-bold text-red-500">${totalExpenses.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                         </div>
                     </div>
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 flex items-center gap-4">
                         <div class="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-xl"><i data-lucide="dollar-sign" class="w-6 h-6 text-blue-600 dark:text-blue-400"></i></div>
                         <div>
                             <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Saldo Atual</h3>
-                            <p class="text-2xl font-bold text-blue-500">${balance.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                            <p class="text-xl md:text-2xl font-bold text-blue-500">${balance.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                         </div>
                     </div>
                 </section>
@@ -375,6 +376,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    /**
+     * Opens a modal with instructions for installing the PWA on iOS.
+     */
+    const openIOSInstallModal = () => {
+        const content = `
+            <div class="text-center">
+                <p class="mb-4">Para instalar o aplicativo no seu iPhone, siga estes passos:</p>
+                <ol class="text-left space-y-2">
+                    <li>1. Toque no ícone de <strong>Compartilhar</strong> <i data-lucide="share"></i> na barra de navegação do Safari.</li>
+                    <li>2. Role para baixo e selecione <strong>"Adicionar à Tela de Início"</strong>.</li>
+                    <li>3. Toque em <strong>"Adicionar"</strong> no canto superior direito.</li>
+                </ol>
+            </div>
+        `;
+        openModal('Instalar no iOS', content, [{ text: 'Entendi', action: 'window.closeModal()', primary: true }]);
+    };
+
     // =================================================================================
     // SETUP AND INITIALIZATION
     // =================================================================================
@@ -453,13 +471,42 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateClock, 60000);
 
     // =================================================================================
-    // EVENT LISTENERS
+    // EVENT LISTENERS & PWA
     // =================================================================================
 
+    const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
     /**
-     * Attaches event listeners to navigation tabs.
+     * Attaches event listeners to navigation tabs and the FAB.
      */
     const setupEventListeners = () => {
+        const installButton = document.getElementById('install-pwa-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installButton.classList.remove('hidden');
+        });
+
+        if (isIOS() && !isInStandaloneMode()) {
+            installButton.classList.remove('hidden');
+        }
+
+        installButton.addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            } else if (isIOS() && !isInStandaloneMode()) {
+                openIOSInstallModal();
+            }
+        });
+
         const tabs = document.querySelectorAll('.nav-tab');
         tabs.forEach(tab => tab.addEventListener('click', () => switchTab(tab.dataset.tab)));
 
