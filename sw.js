@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cuidashift-cache-v1';
+const CACHE_NAME = 'ferrari-manauara-cache-v1';
 const urlsToCache = [
   '/',
   '/index.html',

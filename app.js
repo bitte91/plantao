@@ -78,17 +78,26 @@ document.addEventListener('DOMContentLoaded', () => {
         element.innerHTML = `
             <div class="tab-content space-y-6">
                 <section class="grid md:grid-cols-3 gap-6" aria-label="Resumo financeiro">
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
-                        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Receita Total</h3>
-                        <p class="text-3xl font-bold text-green-500">${totalIncome.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 flex items-center gap-4">
+                        <div class="bg-green-100 dark:bg-green-900/30 p-3 rounded-xl"><i data-lucide="arrow-up-circle" class="w-6 h-6 text-green-600 dark:text-green-400"></i></div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Receita Total</h3>
+                            <p class="text-2xl font-bold text-green-500">${totalIncome.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                        </div>
                     </div>
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
-                        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Despesas Totais</h3>
-                        <p class="text-3xl font-bold text-red-500">${totalExpenses.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 flex items-center gap-4">
+                        <div class="bg-red-100 dark:bg-red-900/30 p-3 rounded-xl"><i data-lucide="arrow-down-circle" class="w-6 h-6 text-red-600 dark:text-red-400"></i></div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Despesas Totais</h3>
+                            <p class="text-2xl font-bold text-red-500">${totalExpenses.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                        </div>
                     </div>
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
-                        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Saldo Atual</h3>
-                        <p class="text-3xl font-bold text-blue-500">${balance.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 flex items-center gap-4">
+                        <div class="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-xl"><i data-lucide="dollar-sign" class="w-6 h-6 text-blue-600 dark:text-blue-400"></i></div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Saldo Atual</h3>
+                            <p class="text-2xl font-bold text-blue-500">${balance.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                        </div>
                     </div>
                 </section>
                 <section class="grid lg:grid-cols-2 gap-6" aria-label="Detalhes das transações">
@@ -100,8 +109,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Transações Recentes</h3>
                         <div class="space-y-4">
                             ${recentTransactions.map(t => `
-                                <div class="flex justify-between items-center">
-                                    <div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-full flex items-center justify-center ${t.type === 'income' ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30'}">
+                                        <i data-lucide="${t.type === 'income' ? 'arrow-up' : 'arrow-down'}" class="w-5 h-5 ${t.type === 'income' ? 'text-green-600' : 'text-red-600'}"></i>
+                                    </div>
+                                    <div class="flex-1">
                                         <p class="font-semibold">${t.type === 'income' ? 'Entrada' : t.category}</p>
                                         <p class="text-sm text-gray-500">${new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR')}</p>
                                     </div>
@@ -184,8 +196,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const transactionList = document.getElementById('transaction-list');
             transactionList.innerHTML = filtered.sort((a, b) => new Date(b.date) - new Date(a.date)).map(t => `
-                <div class="flex justify-between items-center p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                    <div>
+                <div class="flex items-center gap-4 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center ${t.type === 'income' ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30'}">
+                        <i data-lucide="${t.type === 'income' ? 'arrow-up' : 'arrow-down'}" class="w-5 h-5 ${t.type === 'income' ? 'text-green-600' : 'text-red-600'}"></i>
+                    </div>
+                    <div class="flex-1">
                         <p class="font-semibold">${t.type === 'income' ? 'Entrada' : t.category}</p>
                         <p class="text-sm text-gray-500">${new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR')} - ${t.paymentMethod}${t.type === 'expense' ? ' - ' + t.category : ''}</p>
                     </div>
