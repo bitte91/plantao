@@ -1,42 +1,99 @@
+/* Ferrari Manauara - Controle de Orçamento Pessoal */
+
+:root {
+    --c-primary: #DC2626; --c-secondary: #F43F5E; --c-background: #f7f9fc;
+    --c-card: #ffffff; --c-text-primary: #1a237e; --c-text-secondary: #333333;
+    --c-border: #e0e0e0;
+}
+.dark {
+    --c-primary: #F43F5E; --c-secondary: #FB7185; --c-background: #121212;
+    --c-card: #1e1e1e; --c-text-primary: #f1f1f1; --c-text-secondary: #b3b3b3;
+    --c-border: #404040;
+}
 body {
-  margin: 0;
-  font-family: sans-serif;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--c-background);
+    color: var(--c-text-secondary);
+    transition: background-color 0.3s, color 0.3s;
+}
+.tab-active {
+    color: var(--c-primary);
+    font-weight: 600;
+    background-color: var(--c-primary-light);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-/* Estilo para a tela de abertura */
-#splash-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: #ffffff;
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
-  opacity: 1;
-  visibility: visible;
+.modal-backdrop { background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type=number] { -moz-appearance: textfield; }
+
+.toast-enter { animation: slide-in 0.5s forwards; }
+.toast-exit { animation: slide-out 0.5s forwards; }
+
+.tab-content, .skeleton-loader {
+    animation: fade-in-up 0.4s ease-out;
 }
 
-/* Classe para ocultar a splash screen */
-#splash-screen.hidden {
-  opacity: 0;
-  visibility: hidden;
+.calendar-day-dot {
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    margin: 1px auto;
 }
 
-/* Estilo para o vídeo */
-#splash-video {
-  max-width: 90%;
-  max-height: 90vh;
-  width: auto;
-  height: auto;
+/* Estilos modernos adicionais */
+.card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Garante que o conteúdo principal apareça */
-#app-content {
-  visibility: hidden; /* Começa escondido */
-  padding: 20px;
-  transition: visibility 0s;
+.card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.loading-shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, transparent 37%, #f0f0f0 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.dark .loading-shimmer {
+    background: linear-gradient(90deg, #374151 25%, transparent 37%, #374151 63%);
+    background-size: 400% 100%;
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass-effect {
+    background: rgba(31, 41, 55, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.gradient-border {
+    background: linear-gradient(45deg, #DC2626, #F43F5E, #10B981);
+    background-size: 200% 200%;
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@media print {
+    body * { visibility: hidden; }
+    #print-area, #print-area * { visibility: visible; }
+    #print-area { position: absolute; left: 0; top: 0; width: 100%; }
+    .no-print { display: none !important; }
 }
