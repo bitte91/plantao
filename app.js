@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const switchTab = (tabId) => {
         tabs.forEach(tab => tab.classList.toggle('tab-active', tab.dataset.tab === tabId));
-        setTimeout(() => renderContent(tabId), 50); // Small delay to ensure DOM updates
+        renderContent(tabId);
     };
 
 
