@@ -112,63 +112,82 @@
 </head>
 <body class="bg-background text-text-secondary dark:bg-background-dark dark:text-text-secondary-dark">
 
-    <div id="print-area"></div>
-
-    <header class="bg-gradient-to-br from-primary-600 to-primary-700 dark:from-primary-700 dark:to-primary-800 text-white shadow-lg no-print">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                        <span class="text-xl">❤️</span>
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-bold">Ferrari Manauara</h1>
-                        <p class="text-xs text-white/80">Controle de Orçamento Pessoal</p>
-                    </div>
+    <!-- Login Overlay -->
+    <div id="login-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm">
+        <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-sm">
+            <h2 class="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">Login</h2>
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Usuário</label>
+                    <input type="text" id="username" name="username" required class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary">
                 </div>
-                <div class="flex items-center space-x-4">
-                    <div class="hidden md:flex items-center space-x-2 text-white/90">
-                        <i data-lucide="clock" class="w-4 h-4"></i>
-                        <span id="current-time" class="text-sm font-medium"></span>
-                    </div>
-                    <button id="notifications-btn" class="relative p-2 rounded-lg hover:bg-white/10 transition-colors" title="Notificações" aria-label="Ver notificações">
-                        <i data-lucide="bell" class="w-5 h-5"></i>
-                        <span id="notification-badge" class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full text-xs hidden"></span>
-                    </button>
-                    <button id="theme-toggle-btn" class="p-2 rounded-lg hover:bg-white/10 transition-colors" title="Alternar tema" aria-label="Alternar tema entre claro e escuro">
-                        <i data-lucide="sun" id="theme-icon-light" class="w-5 h-5"></i>
-                        <i data-lucide="moon" id="theme-icon-dark" class="w-5 h-5 hidden"></i>
-                    </button>
-                    <button id="install-pwa-btn" class="hidden p-2 rounded-lg hover:bg-white/10 transition-colors" title="Instalar App" aria-label="Instalar aplicativo">
-                        <i data-lucide="download" class="w-5 h-5"></i>
-                    </button>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Senha</label>
+                    <input type="password" id="password" name="password" required class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary">
+                </div>
+                <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-dark">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="app-container" class="hidden md:flex">
+        <!-- Sidebar -->
+        <nav class="w-64 bg-white dark:bg-gray-800 shadow-lg flex flex-col no-print">
+            <div class="flex items-center space-x-3 p-4">
+                <div class="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center">
+                    <span class="text-xl">❤️</span>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-gray-800 dark:text-white">Ferrari Manauara</h1>
                 </div>
             </div>
-        </div>
-    </header>
-
-    <nav class="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-sm sticky top-0 z-20 no-print border-b border-gray-200/50 dark:border-gray-700/50" aria-label="Navegação principal">
-        <div class="container mx-auto">
-            <div class="flex items-center justify-center md:justify-start overflow-x-auto scrollbar-hide">
-                <button data-tab="dashboard" class="nav-tab tab-active flex items-center gap-2 py-3 px-4 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-dark transition-all duration-200 flex-shrink-0 rounded-t-lg relative" aria-label="Acessar dashboard">
-                    <i data-lucide="home" class="w-4 h-4"></i>
-                    <span class="hidden sm:inline font-medium">Dashboard</span>
+            <div class="flex-1 p-4 space-y-2">
+                <button data-tab="dashboard" class="nav-tab tab-active w-full flex items-center gap-3 py-2 px-4 text-gray-600 dark:text-gray-300 hover:bg-primary/10 rounded-lg transition-all duration-200" aria-label="Acessar dashboard">
+                    <i data-lucide="home" class="w-5 h-5"></i>
+                    <span class="font-medium">Dashboard</span>
                 </button>
-                <button data-tab="transactions" class="nav-tab flex items-center gap-2 py-3 px-4 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-dark transition-all duration-200 flex-shrink-0 rounded-t-lg relative" aria-label="Ver transações">
-                    <i data-lucide="dollar-sign" class="w-4 h-4"></i>
-                    <span class="hidden sm:inline font-medium">Transações</span>
+                <button data-tab="transactions" class="nav-tab w-full flex items-center gap-3 py-2 px-4 text-gray-600 dark:text-gray-300 hover:bg-primary/10 rounded-lg transition-all duration-200" aria-label="Ver transações">
+                    <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+                    <span class="font-medium">Transações</span>
                 </button>
-                <button data-tab="settings" class="nav-tab flex items-center gap-2 py-3 px-4 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-dark transition-all duration-200 flex-shrink-0 rounded-t-lg relative" aria-label="Acessar configurações">
-                    <i data-lucide="settings" class="w-4 h-4"></i>
-                    <span class="hidden sm:inline font-medium">Configurações</span>
+                <button data-tab="settings" class="nav-tab w-full flex items-center gap-3 py-2 px-4 text-gray-600 dark:text-gray-300 hover:bg-primary/10 rounded-lg transition-all duration-200" aria-label="Acessar configurações">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                    <span class="font-medium">Configurações</span>
                 </button>
             </div>
-        </div>
-    </nav>
+            <div class="p-4">
+                <button id="install-pwa-btn" class="w-full hidden items-center gap-3 py-2 px-4 bg-primary/10 text-primary dark:text-primary-dark rounded-lg hover:bg-primary/20 transition-colors" title="Instalar App" aria-label="Instalar aplicativo">
+                    <i data-lucide="download" class="w-5 h-5"></i>
+                    <span class="font-medium">Instalar App</span>
+                </button>
+            </div>
+        </nav>
 
-    <main id="main-content" class="container mx-auto p-4 md:p-6 no-print pb-20 md:pb-6">
-        <!-- O conteúdo será renderizado aqui pelo JS -->
-    </main>
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <header class="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-sm no-print border-b border-gray-200/50 dark:border-gray-700/50">
+                <div class="container mx-auto px-4 py-4">
+                    <div class="flex items-center justify-between">
+                        <h1 id="header-title" class="text-xl font-bold text-gray-800 dark:text-white">Dashboard</h1>
+                        <div class="flex items-center space-x-4">
+                            <div class="hidden md:flex items-center space-x-2 text-gray-600 dark:text-gray-300">
+                                <i data-lucide="clock" class="w-4 h-4"></i>
+                                <span id="current-time" class="text-sm font-medium"></span>
+                            </div>
+                            <button id="theme-toggle-btn" class="p-2 rounded-lg hover:bg-gray-200/50 dark:hover:bg-white/10 transition-colors" title="Alternar tema" aria-label="Alternar tema entre claro e escuro">
+                                <i data-lucide="sun" id="theme-icon-light" class="w-5 h-5 text-gray-600 dark:text-gray-300"></i>
+                                <i data-lucide="moon" id="theme-icon-dark" class="w-5 h-5 text-gray-600 dark:text-gray-300 hidden"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main id="main-content" class="flex-1 overflow-y-auto p-4 md:p-6 no-print pb-20 md:pb-6">
+                <!-- O conteúdo será renderizado aqui pelo JS -->
+            </main>
+        </div>
+    </div>
 
     <nav class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200/50 dark:border-gray-700/50 md:hidden z-40 no-print" aria-label="Navegação mobile">
         <div class="grid grid-cols-3 gap-1 px-2 py-2">
