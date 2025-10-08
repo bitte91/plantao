@@ -1,6 +1,47 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // =================================================================================
+    // AUTHENTICATION
+    // =================================================================================
+
+    const checkAuth = () => {
+        return localStorage.getItem('isAuthenticated') === 'true';
+    };
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+        const username = e.target.username.value;
+        const password = e.target.password.value;
+
+        if (username === 'Ferrari-manauara' && password === 'Bb-taubate') {
+            localStorage.setItem('isAuthenticated', 'true');
+            document.getElementById('login-overlay').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+            initializeApp();
+        } else {
+            alert('Usuário ou senha inválidos!');
+        }
+    };
+
+    const setupAuth = () => {
+        const loginOverlay = document.getElementById('login-overlay');
+        const appContainer = document.getElementById('app-container');
+        const loginForm = document.getElementById('login-form');
+
+        if (checkAuth()) {
+            loginOverlay.classList.add('hidden');
+            appContainer.classList.remove('hidden');
+            initializeApp();
+        } else {
+            loginOverlay.classList.remove('hidden');
+            appContainer.classList.add('hidden');
+        }
+
+        loginForm.addEventListener('submit', handleLogin);
+    };
+
+
+    // =================================================================================
     // STATE MANAGEMENT
     // =================================================================================
 
@@ -42,10 +83,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // =================================================================================
 
     const mainContent = document.getElementById('main-content');
-    const tabs = document.querySelectorAll('.nav-tab');
 
     const switchTab = (tabId) => {
-        tabs.forEach(tab => tab.classList.toggle('tab-active', tab.dataset.tab === tabId));
+        // Update sidebar tabs (desktop)
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.classList.toggle('tab-active', tab.dataset.tab === tabId);
+        });
+
+        // Update mobile bottom nav
+        document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+            btn.classList.toggle('text-primary', btn.dataset.tab === tabId);
+            btn.classList.toggle('dark:text-primary-dark', btn.dataset.tab === tabId);
+        });
+
+        // Update header title
+        const headerTitle = document.getElementById('header-title');
+        if (headerTitle) {
+            const titles = {
+                dashboard: 'Dashboard',
+                transactions: 'Transações',
+                settings: 'Configurações'
+            };
+            headerTitle.textContent = titles[tabId] || 'Dashboard';
+        }
+
         renderContent(tabId);
     };
 
@@ -463,12 +524,15 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- APP INITIALIZATION ---
-
-    loadData();
-    setupTheme();
-    setupServiceWorker();
-    updateClock();
-    setInterval(updateClock, 60000);
+    const initializeApp = () => {
+        loadData();
+        setupTheme();
+        setupServiceWorker();
+        updateClock();
+        setInterval(updateClock, 60000);
+        setupEventListeners();
+        switchTab('dashboard');
+    };
 
     // =================================================================================
     // EVENT LISTENERS & PWA
@@ -518,6 +582,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    setupEventListeners();
-    switchTab('dashboard');
+    setupAuth();
 });

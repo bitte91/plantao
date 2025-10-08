@@ -16,30 +16,11 @@ body {
     color: var(--c-text-secondary);
     transition: background-color 0.3s, color 0.3s;
 }
-/* New styles for tab navigation */
-.nav-tab {
-    position: relative;
-}
-
-.nav-tab::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 2px;
-    background-color: var(--c-primary);
-    transition: width 0.3s ease-in-out;
-}
-
+/* New styles for sidebar navigation */
 .tab-active {
     color: var(--c-primary);
+    background-color: rgba(220, 38, 38, 0.1); /* primary/10 */
     font-weight: 600;
-}
-
-.tab-active::after {
-    width: 100%;
 }
 
 .modal-backdrop { background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); }
