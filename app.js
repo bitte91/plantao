@@ -136,6 +136,49 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     /**
+     * Handles the click event for the 'Generate Insights' button.
+     * Fetches insights from the backend API and displays them in a modal.
+     */
+    const handleGenerateInsightsClick = async () => {
+        const btn = document.getElementById('generate-insights-btn');
+        if (!btn) return;
+
+        const originalBtnContent = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = `
+            <i data-lucide="loader" class="w-4 h-4 animate-spin"></i>
+            <span>Analisando...</span>
+        `;
+        lucide.createIcons();
+
+        try {
+            const response = await fetch('/api/generate-insights', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    transactions: db.transactions
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({})); // Evita erro se não houver corpo JSON
+                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            openModal('Insights Financeiros', data.insight, [{ text: 'Entendi', action: 'window.closeModal()', primary: true }]);
+
+        } catch (error) {
+            console.error('Failed to fetch insights:', error);
+            showToast(`Erro ao gerar insights. Tente novamente mais tarde.`, 'error');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalBtnContent;
+            lucide.createIcons();
+        }
+    };
+
+    /**
      * Renders the dashboard view with financial summaries and a chart.
      * @param {HTMLElement} element - The parent element to render into.
      */
@@ -147,6 +190,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         element.innerHTML = `
             <div class="tab-content space-y-6">
+                <section class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700" aria-label="Assistente Financeiro">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Assistente Financeiro</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Use a IA para obter insights sobre seus gastos e receber dicas.</p>
+                        </div>
+                        <button id="generate-insights-btn" class="bg-primary text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-primary-dark transition-colors w-full md:w-auto justify-center">
+                            <i data-lucide="sparkles" class="w-4 h-4"></i>
+                            <span>Gerar Insights</span>
+                        </button>
+                    </div>
+                </section>
+
                 <section class="grid md:grid-cols-3 gap-6" aria-label="Resumo financeiro">
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 flex items-center gap-4">
                         <div class="bg-green-100 dark:bg-green-900/30 p-3 rounded-xl"><i data-lucide="arrow-up-circle" class="w-6 h-6 text-green-600 dark:text-green-400"></i></div>
@@ -202,6 +258,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentChart) {
             currentChart.destroy();
         }
+
+        // Attach event listener for the insights button
+        document.getElementById('generate-insights-btn').addEventListener('click', handleGenerateInsightsClick);
+
         currentChart = new Chart(ctx, {
             type: 'pie',
             data: {
@@ -299,7 +359,24 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {HTMLElement} element - The parent element to render into.
      */
     const renderSettings = (element) => {
-        element.innerHTML = `<section aria-label="Configurações"><h2 class="text-2xl font-bold text-text-primary dark:text-text-primary-dark mb-4">Configurações</h2><p>Página de configurações em desenvolvimento.</p></section>`;
+        element.innerHTML = `
+            <section class="tab-content space-y-6" aria-label="Configurações">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
+                    <h2 class="text-2xl font-bold text-text-primary dark:text-text-primary-dark mb-4">Configurações</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Gerenciamento da Chave de API</h3>
+                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                A sua chave da API do Google Gemini agora é gerenciada de forma segura no backend.
+                            </p>
+                             <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                                Nenhuma ação é necessária da sua parte. Ao gerar insights, o aplicativo usará a chave de API configurada no ambiente do servidor, garantindo que ela permaneça privada e segura.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        `;
     };
 
     // =================================================================================

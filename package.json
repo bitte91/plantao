@@ -1,0 +1,12 @@
+{
+  "name": "ferrari-manauara",
+  "version": "1.0.0",
+  "description": "Controle de Orçamento Pessoal",
+  "main": "app.js",
+  "scripts": {},
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google/generative-ai": "^0.14.1"
+  }
+}
