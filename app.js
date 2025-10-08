@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
+    let deferredPrompt;
+
+    // Listen for the install prompt event as soon as the page loads
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        console.log('`beforeinstallprompt` event was fired and stored.');
+        // The button will be shown inside setupEventListeners after login
+    });
 
     // =================================================================================
     // AUTHENTICATION
@@ -47,7 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let db = { transactions: [], settings: { theme: 'light', userName: 'Usuário' } };
     let currentChart = null;
-    let deferredPrompt;
 
     /**
      * Saves the current state of the database to localStorage.
@@ -462,23 +470,34 @@ document.addEventListener('DOMContentLoaded', () => {
      * Sets up the theme toggle functionality.
      */
     const setupTheme = () => {
-        const themeToggleBtn = document.getElementById('theme-toggle-btn');
-        const lightIcon = document.getElementById('theme-icon-light');
-        const darkIcon = document.getElementById('theme-icon-dark');
+        const themeToggleBtns = [
+            document.getElementById('theme-toggle-btn'),
+            document.getElementById('theme-toggle-btn-mobile')
+        ];
+        const lightIcons = [
+            document.getElementById('theme-icon-light'),
+            document.getElementById('theme-icon-light-mobile')
+        ];
+        const darkIcons = [
+            document.getElementById('theme-icon-dark'),
+            document.getElementById('theme-icon-dark-mobile')
+        ];
         const htmlEl = document.documentElement;
 
         const applyTheme = (theme) => {
             htmlEl.classList.toggle('dark', theme === 'dark');
-            lightIcon.classList.toggle('hidden', theme === 'dark');
-            darkIcon.classList.toggle('hidden', theme !== 'dark');
+            lightIcons.forEach(icon => icon.classList.toggle('hidden', theme === 'dark'));
+            darkIcons.forEach(icon => icon.classList.toggle('hidden', theme !== 'dark'));
             localStorage.setItem('theme', theme);
         };
 
         const currentTheme = localStorage.getItem('theme') || 'light';
         applyTheme(currentTheme);
 
-        themeToggleBtn.addEventListener('click', () => {
-            applyTheme(htmlEl.classList.contains('dark') ? 'light' : 'dark');
+        themeToggleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                applyTheme(htmlEl.classList.contains('dark') ? 'light' : 'dark');
+            });
         });
     };
 
@@ -547,13 +566,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const setupEventListeners = () => {
         const installButton = document.getElementById('install-pwa-btn');
 
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installButton.classList.remove('hidden');
-        });
-
-        if (isIOS() && !isInStandaloneMode()) {
+        // Only show the install button if the prompt was captured or on iOS.
+        if (deferredPrompt || (isIOS() && !isInStandaloneMode())) {
             installButton.classList.remove('hidden');
         }
 
@@ -563,6 +577,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
                         console.log('User accepted the install prompt');
+                        installButton.classList.add('hidden'); // Hide after prompting
                     }
                     deferredPrompt = null;
                 });
