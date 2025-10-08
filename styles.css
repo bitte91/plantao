@@ -16,12 +16,30 @@ body {
     color: var(--c-text-secondary);
     transition: background-color 0.3s, color 0.3s;
 }
+/* New styles for tab navigation */
+.nav-tab {
+    position: relative;
+}
+
+.nav-tab::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: var(--c-primary);
+    transition: width 0.3s ease-in-out;
+}
+
 .tab-active {
     color: var(--c-primary);
     font-weight: 600;
-    background-color: var(--c-primary-light);
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.tab-active::after {
+    width: 100%;
 }
 
 .modal-backdrop { background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); }
